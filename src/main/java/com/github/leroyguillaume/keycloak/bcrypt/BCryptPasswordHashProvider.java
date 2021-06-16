@@ -1,6 +1,7 @@
 package com.github.leroyguillaume.keycloak.bcrypt;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import at.favre.lib.crypto.bcrypt.LongPasswordStrategies;
 import org.keycloak.credential.hash.PasswordHashProvider;
 import org.keycloak.models.PasswordPolicy;
 import org.keycloak.models.credential.PasswordCredentialModel;
@@ -44,7 +45,7 @@ public class BCryptPasswordHashProvider implements PasswordHashProvider {
         } else {
             cost = iterations;
         }
-        return BCrypt.with(BCrypt.Version.VERSION_2B).hashToString(cost, rawPassword.toCharArray());
+        return BCrypt.with(BCrypt.Version.VERSION_2B, LongPasswordStrategies.none()).hashToString(cost, rawPassword.toCharArray());
     }
 
     @Override
@@ -55,7 +56,7 @@ public class BCryptPasswordHashProvider implements PasswordHashProvider {
     @Override
     public boolean verify(String rawPassword, PasswordCredentialModel credential) {
         final String hash = credential.getPasswordSecretData().getValue();
-        BCrypt.Result verifier = BCrypt.verifyer().verify(rawPassword.toCharArray(), hash.toCharArray());
+        BCrypt.Result verifier = BCrypt.verifyer(BCrypt.Version.VERSION_2B, LongPasswordStrategies.none()).verify(rawPassword.toCharArray(), hash.toCharArray());
         return verifier.verified;
     }
 }
