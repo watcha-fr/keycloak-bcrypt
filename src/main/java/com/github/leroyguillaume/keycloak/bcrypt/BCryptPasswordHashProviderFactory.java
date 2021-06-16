@@ -29,7 +29,7 @@ import org.keycloak.provider.ProviderFactory;
  */
 public class BCryptPasswordHashProviderFactory implements PasswordHashProviderFactory {
     public static final String ID = "bcrypt";
-    public static final int DEFAULT_ITERATIONS = 10;
+    public static final int DEFAULT_ITERATIONS = 12;
 
     @Override
     public PasswordHashProvider create(KeycloakSession session) {
